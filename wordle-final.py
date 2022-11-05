@@ -1,5 +1,5 @@
 """
-File: wordle.py
+File: wordle-final.py
 Authors: Brianna Floyd and Mathisha Karunaratne
 Date: 16 May 2022
 Description: Fully working version of popular word guessing game Wordle.
