@@ -1,5 +1,5 @@
 """
-File: wordle-final.py
+File: wordle.py
 Authors: Brianna Floyd and Mathisha Karunaratne
 Date: 16 May 2022
 Description: Fully working version of popular word guessing game Wordle.
@@ -30,7 +30,6 @@ class Wordle:
         self.PARENT_GUESS_FRAME_HEIGHT = 500
 
         # Parameter instance variables
-        self.hard_mode = False
         self.guesses_words = True
         self.show_word = False
         self.specify_word = False
@@ -266,12 +265,6 @@ class Wordle:
             upper_guess = self.full_guess[i].upper()
             upper_letter = self.word[i].upper()          
             self.repeats[i] = False      
-            
-            # If hard mode is enabled, run the checks
-            if self.hard_mode == True:
-                self.hard_mode_checks(upper_guess, upper_letter, i)
-                if self.incorrect_guess == True:
-                    return
 
             # Change all correct letters to green, 
             # and remember that they have been changed to green
@@ -282,8 +275,6 @@ class Wordle:
                 self.letter_instances_word[upper_guess] -= 1
                 self.repeats[i] = True
                 self.buttons_color_changed[upper_guess] = True
-                if self.hard_mode == True:
-                    self.colors_list[i] = 'green'
         
         self.process_guesses_second_run()
 
@@ -309,19 +300,13 @@ class Wordle:
                         if self.buttons_color_changed[upper_guess] == False:
                             self.buttons[upper_guess]['fg'] = 'gray'
                             self.buttons_color_changed[upper_guess]
-
-                            # Disable the keyboard button if the letter is 
-                            # not in the word and if hard mode is enabled
-                            if self.hard_mode == True:
-                                self.buttons[upper_guess]['state'] = 'disabled'
-                                self.colors_list[i] = 'gray'
                     else:
                         self.color_changes('orange', i)
                         self.letter_instances_word[upper_guess] -= 1
                         if self.buttons_color_changed[upper_guess] == False:
                             self.buttons[upper_guess]['fg'] = 'orange'
-                            if self.hard_mode == True:
-                                self.colors_list[i] = 'orange'
+                            #if self.hard_mode == True:
+                                #self.colors_list[i] = 'orange'
                                
             else:
                 self.color_changes('gray', i)
@@ -330,29 +315,6 @@ class Wordle:
                 if self.buttons_color_changed[upper_guess] == False:
                     self.buttons[upper_guess]['fg'] = 'gray'
                     self.buttons_color_changed[upper_guess] = True
-
-                    # Disable the keyboard button if the letter is 
-                    # not in the word and if hard mode is enabled
-                    if self.hard_mode == True:
-                        self.buttons[upper_guess]['state'] = 'disabled'
-                        self.colors_list[i] = 'gray'
-
-    def hard_mode_checks(self):
-        """
-        Runs checks for hard mode
-        """
-        # Getting the previous guesses word
-        for n in self.full_guess:
-            self.previous_indexes.append(n)
-        
-        if self.guess_row != 2:
-            for n in range(len(self.full_guess)):
-                # If the previous letter was in the correct spot, make sure it stays there
-                if self.full_guess[n] != self.previous_indexes[n] and self.colors_list[n] == 'green':
-                    self.message_display(self.MESSAGE_DISPLAY_TIME_SECS, self.full_guess + " is not consisten with previous guesses")
-                    self.incorrect_guess = True
-            
-            self.guess_column = 6
 
     def colors_list_creation(self):
         """
@@ -543,13 +505,6 @@ class Wordle:
         self.control_frame_2.grid(row = 2, column = 1)
         self.control_frame_2.grid_propagate(False)
 
-        # Creates hardmode checkbox
-        self.checkbox_hardmode_var = tk.BooleanVar()
-        self.checkbox_hardmode_var.set(False)
-        self.checkbox_hardmode = tk.Checkbutton(self.control_frame_2, text="Hard mode", 
-                            var = self.checkbox_hardmode_var)
-        self.checkbox_hardmode.grid(row = 1, column = 1, sticky = tk.W, padx = self.USER_SELECTION_PADDING)
-
         # Creates guesses must be words checkbox
         self.checkbox_wordguesses_var = tk.BooleanVar()
         self.checkbox_wordguesses_var.set(True)
@@ -662,20 +617,17 @@ class Wordle:
             self.hidden_word_var.set("")
 
             # Get status of all checkboxes
-            self.hard_mode = self.checkbox_hardmode_var.get()
             self.guesses_words = self.checkbox_wordguesses_var.get()
             self.show_word = self.checkbox_show_word_var.get()
             self.specify_word = self.checkbox_specify_var.get()
 
             # Print parameter settings
-            print("Hard mode = " + str(self.hard_mode))
             print("Guesses must be words = " + str(self.guesses_words))
             print("Show word = " + str(self.show_word))
             print("Specify word = " + str(self.specify_word))
             print("Hidden word = " + self.word)
 
             # Disable necessary checkboxes
-            self.checkbox_hardmode['state'] = 'disabled'
             self.checkbox_specify['state'] = 'disabled'
             self.checkbox_wordguesses['state'] = 'disabled'
             self.hidden_word_entry['state'] = 'disabled'
