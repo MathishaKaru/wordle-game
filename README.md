@@ -1,8 +1,8 @@
-# Wordle
+# Wordle Game
 
 This game was created with a partner in my Programming Abstractions and Methodologies class at The University of San Diego. It uses the Python GUI toolkit Tkinter. 
 
-The game works like the well-known Worlde game, where a user guesses 5 letter words and uses the colors on each letter to determine how close their guess was (Green = Correct letter in correct location. Orange = Correct letter in wrong location. Gray = Letter not in word).
+The game works like the well-known Worlde game, where a user has 6 guesses to determine a 5 letter word, and uses the colors on each letter to determine how close their guess was (Green = Correct letter in correct location. Orange = Correct letter in wrong location. Gray = Letter not in word).
 
 This game has a few extra features, such as the ability to use your own word as the answer.
 
